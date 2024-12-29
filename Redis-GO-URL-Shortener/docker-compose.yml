@@ -1,0 +1,24 @@
+# Define services for the application, including the API and Redis database.
+services:
+  # The API service, which hosts the URL shortener application.
+  api:
+    # Build the API image from the `api` directory.
+    build: api
+    # Map port 3000 on the host to port 3000 in the container.
+    ports:
+      - "3000:3000"
+    # Ensure the `db` service is started before the `api` service.
+    depends_on:
+      - db
+
+  # The Redis database service.
+  db:
+    # Build the Redis image from the `db` directory.
+    build: db
+    # Map port 6379 on the host to port 6379 in the container (default Redis port).
+    ports:
+      - "6379:6379"
+    # Mount the `data` directory on the host to `/data` in the container
+    # for persistent storage of Redis data.
+    volumes:
+      - ./data:/data
